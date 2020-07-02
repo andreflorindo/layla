@@ -1,0 +1,34 @@
+- git:
+    local-name: kr210_cell_support
+    uri: https://github.com/andreflorindo/kr210_cell_support.git
+    version: master
+- git:
+    local-name: kuka_experimental
+    uri: https://github.com/andreflorindo/kuka_experimental.git
+    version: rotate_fourth_axis
+- git:
+    local-name: tesseract
+    uri: https://github.com/ros-industrial-consortium/tesseract.git
+    version: master
+- git:
+    local-name: tesseract_ros
+    uri: https://github.com/ros-industrial-consortium/tesseract_ros.git
+    version: master
+- git:
+    local-name: trajopt
+    uri: https://github.com/ros-industrial-consortium/trajopt_ros.git
+    version: master
+- git:
+    local-name: descartes_light
+    uri: https://github.com/swri-robotics/descartes_light.git
+    version: master
+- git:
+    local-name: opw_kinematics
+    uri: https://github.com/Jmeyer1292/opw_kinematics.git
+    version: master
+- git:
+    local-name: descartes
+    uri: https://github.com/ros-industrial-consortium/descartes.git
+    version: master
+    
+    

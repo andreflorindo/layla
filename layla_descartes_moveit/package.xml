@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>layla_descartes_moveit</name>
+  <version>0.1.0</version>
+  <description>This package contains layla motion planner using descartes together with moveit</description>
+  <maintainer email="a.m.mendesflorindo@student.tudelft.nl">Andre Florindo</maintainer>
+  <license>Tu Delft</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>roscpp</build_depend>
+  <build_export_depend>roscpp</build_export_depend>
+  <exec_depend>roscpp</exec_depend>
+
+  <build_depend>libogre-dev</build_depend>
+  <build_depend>libqt5-opengl-dev</build_depend>
+
+  <depend>descartes_core</depend>
+  <depend>descartes_planner</depend>
+  <depend>descartes_moveit</depend>
+  <depend>descartes_trajectory</depend>
+  <depend>descartes_utilities</depend>
+
+  <depend>moveit_ros_planning_interface</depend>
+  <depend>eigen_conversions</depend>
+
+  <depend>layla_msgs</depend>
+  <depend>moveit_msgs</depend>
+
+  <!-- The export tag contains other, unspecified, tags -->
+  <export>
+    <!-- Other tools can request additional information be placed here -->
+
+  </export>
+</package>

@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package>
+  <name>layla_motion_planner</name>
+  <version>0.0.1</version>
+  <description> Motion planner repository for manufacturing LAYLA </description>
+
+  <maintainer email="a.m.mendesflorindo@student.tudelft.nl">Andre Florindo</maintainer>
+
+  <license>BSD</license>
+ 
+
+  <buildtool_depend>catkin</buildtool_depend>
+  
+  <export>
+  	<metapackage/>
+  </export>
+</package>

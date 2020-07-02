@@ -1,0 +1,60 @@
+{
+    "configurations": [
+        {
+            "browse": {
+                "databaseFilename": "",
+                "limitSymbolsToIncludedHeaders": true
+            },
+            "includePath": [
+                "/home/andre/workspaces/layla_ws/devel/include/**",
+                "/opt/ros/kinetic/include/**",
+                "/home/andre/workspaces/layla_ws/src/descartes/descartes_core/include/**",
+                "/home/andre/workspaces/layla_ws/src/descartes_light/descartes_ikfast/include/**",
+                "/home/andre/workspaces/layla_ws/src/descartes_light/descartes_light/include/**",
+                "/home/andre/workspaces/layla_ws/src/descartes/descartes_moveit/include/**",
+                "/home/andre/workspaces/layla_ws/src/descartes_light/descartes_opw/include/**",
+                "/home/andre/workspaces/layla_ws/src/descartes/descartes_planner/include/**",
+                "/home/andre/workspaces/layla_ws/src/descartes_light/descartes_samplers/include/**",
+                "/home/andre/workspaces/layla_ws/src/descartes/descartes_tests/include/**",
+                "/home/andre/workspaces/layla_ws/src/descartes/descartes_trajectory/include/**",
+                "/home/andre/workspaces/layla_ws/src/descartes/descartes_utilities/include/**",
+                "/home/andre/workspaces/layla_ws/src/kr210_cell_support/kr210_atl_ikfast_manipulator_plugin/include/**",
+                "/home/andre/workspaces/layla_ws/src/kr210_cell_support/kr210_pen_ikfast_manipulator_plugin/include/**",
+                "/home/andre/workspaces/layla_ws/src/kuka_experimental/kuka_eki_hw_interface/include/**",
+                "/home/andre/workspaces/layla_ws/src/kuka_experimental/kuka_rsi_hw_interface/include/**",
+                "/home/andre/workspaces/layla_ws/src/layla/layla_descartes_moveit/include/**",
+                "/home/andre/workspaces/layla_ws/src/layla/layla_descartes_tesseract/include/**",
+                "/home/andre/workspaces/layla_ws/src/layla/layla_ompl_moveit/include/**",
+                "/home/andre/workspaces/layla_ws/src/layla/layla_trajopt_tesseract/include/**",
+                "/home/andre/workspaces/layla_ws/src/layla/layla_utilities/include/**",
+                "/home/andre/workspaces/layla_ws/src/opw_kinematics/include/**",
+                "/home/andre/workspaces/layla_ws/src/tesseract/tesseract/tesseract/include/**",
+                "/home/andre/workspaces/layla_ws/src/tesseract/tesseract/tesseract_collision/include/**",
+                "/home/andre/workspaces/layla_ws/src/tesseract/tesseract/tesseract_common/include/**",
+                "/home/andre/workspaces/layla_ws/src/tesseract/tesseract/tesseract_environment/include/**",
+                "/home/andre/workspaces/layla_ws/src/tesseract/tesseract/tesseract_geometry/include/**",
+                "/home/andre/workspaces/layla_ws/src/tesseract/tesseract/tesseract_kinematics/include/**",
+                "/home/andre/workspaces/layla_ws/src/tesseract_ros/tesseract_ros/tesseract_monitoring/include/**",
+                "/home/andre/workspaces/layla_ws/src/tesseract/tesseract/tesseract_planning/tesseract_motion_planners/include/**",
+                "/home/andre/workspaces/layla_ws/src/tesseract/tesseract/tesseract_planning/tesseract_process_planners/include/**",
+                "/home/andre/workspaces/layla_ws/src/tesseract_ros/tesseract_ros/tesseract_examples/tesseract_ros_examples/include/**",
+                "/home/andre/workspaces/layla_ws/src/tesseract_ros/tesseract_ros/tesseract_rosutils/include/**",
+                "/home/andre/workspaces/layla_ws/src/tesseract_ros/tesseract_ros/tesseract_rviz/include/**",
+                "/home/andre/workspaces/layla_ws/src/tesseract/tesseract/tesseract_scene_graph/include/**",
+                "/home/andre/workspaces/layla_ws/src/tesseract/tesseract/tesseract_urdf/include/**",
+                "/home/andre/workspaces/layla_ws/src/tesseract/tesseract/tesseract_visualization/include/**",
+                "/home/andre/workspaces/layla_ws/src/trajopt_ros/trajopt/include/**",
+                "/home/andre/workspaces/layla_ws/src/trajopt_ros/trajopt_sco/include/**",
+                "/home/andre/workspaces/layla_ws/src/trajopt_ros/trajopt_utils/include/**",
+                "/home/andre/workspaces/layla_ws/src/trajopt_ros/trajopt_ext/vhacd/include/**",
+                "/usr/include/**"
+            ],
+            "name": "ROS",
+            "intelliSenseMode": "gcc-x64",
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "gnu11",
+            "cppStandard": "c++17"
+        }
+    ],
+    "version": 4
+}

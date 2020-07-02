@@ -1,0 +1,118 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="sim" default="true"/>
+  <arg name="robot_ip" default="" unless="$(arg sim)"/>
+  <arg name="robot_description" default="robot_description"/>
+  <arg name="plotting" default="false"/>
+  <arg name="rviz" default="true"/>
+
+  <arg name="group_name" default="manipulator"/>
+  <arg name="world_frame" default="kl2000_base_link"/> 
+  <arg name="base_link" default="kr210_base_link"/> 
+  <arg name="tip_link" default="atl_tool_tool_tip"/>  
+
+  <!-- Change course position and velocities -->
+  <!-- <arg name="course_filename" value="/examples/simplePath.txt"/> -->
+  <arg name="course_filename" value="/examples/ExampleAndreFlat.txt"/>
+  <arg name="layer" default="3"/>  <!-- Ratio from max joint speed -->
+  <arg name="course" default="16"/> <!-- m/s -->
+  <arg name="distance_waypoints" default="0.004"/> <!--0.00574--> <!-- meters -->
+  <arg name="smooth_start" default="true"/> <!-- If true, add an initial extension path to provide smooth accelerations and decelerations -->
+  <arg name="interpolate" default="false"/> <!-- If true, creates a spline which interpolates cartesian points. If false, creates a bspline much smoother  -->
+  <arg name="add_x_distance" default="0.0"/> <!-- meters. Positive goes to the front, futher from the base-->
+  <arg name="add_y_distance" default="0.0"/> <!-- meters. Positive goes to the left-->
+  <arg name="add_z_distance" default="0.7"/> <!-- meters. Positive goes higher -->
+  <arg name="tow_width" default="0.0"/>   <!-- inches -->
+  <arg name="tow_thickness" default="0.001"/>   <!-- inches -->
+  <arg name="max_velocity_scaling" default="0.05"/>  <!-- Ratio from max joint speed -->
+  <arg name="ee_speed" default="0.1"/> <!-- m/s -->
+  
+  <!-- Load universal robot description format (URDF) -->
+  <include file="$(find kr210_atl_moveit_config)/launch/planning_context.launch">
+    <arg name="load_robot_description" value="true"/>
+  </include>
+
+  <!-- Non-standard joint names -->
+  <rosparam command="load" file="$(find kr210_atl_moveit_config)/config/joint_names.yaml" />
+
+  <group if="$(arg sim)">
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="true" output="screen" />
+    <include file="$(find industrial_robot_simulator)/launch/robot_interface_simulator.launch" />
+    <!-- <rosparam param="initial_joint_state">[0.0, -1.57, 1.57, 0.0, 1.57, 0.0]</rosparam> -->
+    <!-- <include file="$(find kr210_drivers)/launch/kr210_atl_controller_simulator.launch"/> -->
+  </group>
+
+  <group unless="$(arg sim)"> 
+     <!-- <remap from="/follow_joint_trajectory/status" to="/joint_trajectory_action/status" /> 
+     <remap from="/follow_joint_trajectory/feedback" to="/joint_trajectory_action/feedback" /> 
+     <remap from="/follow_joint_trajectory/result" to="/joint_trajectory_action/result" /> 
+     <remap from="/follow_joint_trajectory/goal" to="/joint_trajectory_action/goal" /> 
+     <remap from="/follow_joint_trajectory/cancel" to="/joint_trajectory_action/cancel" />  -->
+
+    <remap from="/position_trajectory_controller/follow_joint_trajectory" to="/joint_trajectory_action" />
+    <remap from="/position_trajectory_controller/state" to="/feedback_states" />
+    <remap from="/position_trajectory_controller/command" to="/joint_path_command"/>
+
+    <include file="$(find kr210_drivers)/launch/kr210_atl_controller_bringup.launch" />
+
+    <node pkg="tf2_ros" type="buffer_server" name="tf2_buffer_server" output="screen">
+      <param name="buffer_size" value="120.0"/>
+    </node>    
+  </group>
+
+  <!-- <node name="pose_builder" pkg="layla_utilities" type="pose_builder" output="screen">
+    <param name="world_frame" value="kl2000_base_link"/> 
+  </node> -->
+
+  <node name="pose_builder_python" pkg="layla_utilities" type="pose_builder.py" output="screen">
+    <param name="world_frame" value="$(arg base_link)"/>
+    <param name="course_filename" value="$(arg course_filename)"/>  
+    <param name="distance_waypoints" value="$(arg distance_waypoints)"/> 
+    <param name="add_x_distance" value="$(arg add_x_distance)"/> 
+    <param name="add_y_distance" value="$(arg add_y_distance)"/> 
+    <param name="add_z_distance" value="$(arg add_z_distance)"/> 
+    <param name="tow_width" value="$(arg tow_width)"/>  
+    <param name="tow_thickness" value="$(arg tow_thickness)"/> 
+    <param name="smooth_start" value="$(arg smooth_start)"/>
+    <param name="interpolate" value="$(arg interpolate)"/>   
+  </node>
+
+  <node name="course_display" pkg="layla_utilities" type="course_display" output="screen"/>
+
+  <node name="ee_cartesian_pose_publisher" pkg="layla_utilities" type="ee_cartesian_pose_publisher" output="screen">
+    <param name="tip_link" value="$(arg tip_link)"/>
+    <param name="base_link" value="$(arg base_link)"/>
+  </node>
+
+  <node name="joint_request_publisher" pkg="layla_utilities" type="joint_request_publisher" output="screen">
+    <param name="sim" value="$(arg sim)"/>
+  </node>
+
+  <!-- <node name="ee_request_publisher" pkg="layla_utilities" type="ee_request_publisher" output="screen">
+    <param name="group_name" value="manipulator"/>
+    <param name="tip_link" value="atl_tool_tool_tip"/> 
+    <param name="base_link" value="kr210_base_link"/>
+  </node> -->
+
+    <!-- If needed, broadcast static tf for robot root -->
+  <node name="layla_descartes_tesseract_main" pkg="layla_descartes_tesseract" type="layla_descartes_tesseract_main" output="screen">
+    <param name="plotting" type="bool" value="$(arg plotting)"/>
+    <param name="rviz" type="bool" value="$(arg rviz)"/>
+    <param name="group_name" value="$(arg group_name)"/>
+    <param name="tip_link" value="$(arg tip_link)"/>  <!--kr210_qr_tool0-->
+    <param name="base_link" value="$(arg base_link)"/>
+    <param name="world_frame" value="$(arg world_frame)"/>  <!--table_table_top--> 
+    <param name="layer" value="$(arg layer)"/>
+    <param name="course" value="$(arg course)"/>   
+  </node>
+
+
+    <!-- Launch visualization -->
+    <!-- <node if="$(arg rviz)" pkg="rviz" type="rviz" name="tesseract_ros_examples_puzzle_piece_example_rviz"
+        args="-d $(find layla_trajopt_tesseract)/config/examples.rviz" /> -->
+  <!-- <node if="$(arg rviz)" pkg="rviz" type="rviz" name=" layla_tesseract_rviz"
+    args="-d $(find layla_trajopt_tesseract)/config/config.rviz" />  -->
+    <node name="rviz" type="rviz" pkg="rviz" args="-d $(find layla_descartes_tesseract)/config/config.rviz" required="true" output="screen" />
+
+</launch>
+

@@ -1,0 +1,114 @@
+<?xml version="1.0" ?>
+<launch>
+  <arg name="sim" default="true" />    <!--Simulation-->
+  <arg name="motion_planning" default="descartes" />
+
+  <arg name="group_name" default="manipulator"/>
+  <arg name="world_frame" default="kl2000_base_link"/>  <!--table_table_top--> 
+  <arg name="base_link" default="kr210_base_link"/> 
+  <arg name="tip_link" default="atl_tool_tool_tip"/>  <!--kr210_qr_tool0-->
+
+  <arg name="course_filename" default="/examples/ExampleAndreFlat.txt"/>
+  <!-- <arg name="course_filename" default="/examples/ExampleRik4.txt"/> -->
+  <arg name="layer" default="3"/>  <!-- Ratio from max joint speed -->
+  <arg name="course" default="16"/> <!-- m/s -->
+  <arg name="distance_waypoints" default="0.02"/> <!--0.00574--> <!-- meters -->
+  <arg name="smooth_start" default="true"/> <!-- If true, add an initial extension path to provide smooth accelerations and decelerations -->
+  <arg name="interpolate" default="true"/> <!-- If true, creates a bspline that interpolates the given points. If false, given points are used as control points to create a much smoother bspline -->
+  <arg name="exact_waypoints" default="false"/>
+  <arg name="add_x_distance" default="0.0"/> <!-- meters. Positive goes to the front, futher from the base-->
+  <arg name="add_y_distance" default="0.0"/> <!-- meters. Positive goes to the left-->
+  <arg name="add_z_distance" default="0.7"/> <!-- meters. Positive goes higher -->
+  <arg name="tow_width" default="0.0"/>   <!-- inches -->
+  <arg name="tow_thickness" default="0.001"/>   <!-- inches -->
+  <arg name="max_velocity_scaling" default="0.1"/>  <!-- Ratio from max joint speed -->
+  <arg name="ee_speed" default="0.1"/> <!-- m/s -->
+
+  <group if="$(eval arg('motion_planning') == 'ompl')"> 
+  <include file="$(find layla_ompl_moveit)/launch/layla_moveit_setup.launch">
+    <arg name="sim" value="$(arg sim)" /> 
+  </include>
+
+  <include file="$(find layla_ompl_moveit)/launch/layla_ompl_moveit_planner.launch">
+    <arg name="planner_id" value="RRTConnect" />
+    <arg name="sim" value="$(arg sim)" />  
+    <arg name="group_name" value="$(arg group_name)"/>
+    <arg name="world_frame" value="$(arg world_frame)"/>  
+    <arg name="base_link" value="$(arg base_link)"/> 
+    <arg name="tip_link" value="$(arg tip_link)"/>  
+    <arg name="course_filename" value="$(arg course_filename)"/>
+    <arg name="layer" value="$(arg layer)"/>  
+    <arg name="course" value="$(arg course)"/> 
+    <arg name="distance_waypoints" value="$(arg distance_waypoints)"/> 
+    <arg name="smooth_start" value="$(arg smooth_start)"/> 
+    <arg name="interpolate" value="$(arg interpolate)"/> 
+    <arg name="exact_waypoints" value="$(arg exact_waypoints)"/> 
+    <arg name="add_x_distance" value="$(arg add_x_distance)"/> 
+    <arg name="add_y_distance" value="$(arg add_y_distance)"/> 
+    <arg name="add_z_distance" value="$(arg add_z_distance)"/> 
+    <arg name="tow_width" value="$(arg tow_width)"/>  
+    <arg name="tow_thickness" value="$(arg tow_thickness)"/>
+    <arg name="max_velocity_scaling" value="$(arg max_velocity_scaling)"/>  
+    <arg name="ee_speed" value="$(arg ee_speed)"/> 
+  </include>
+  </group>
+
+  <group if="$(eval arg('motion_planning') == 'descartes')"> 
+  <include file="$(find layla_descartes_moveit)/launch/layla_moveit_setup.launch">
+    <arg name="sim" value="$(arg sim)" /> 
+  </include>
+
+  <include file="$(find layla_descartes_moveit)/launch/layla_descartes_moveit_planner.launch">
+    <arg name="sim" value="$(arg sim)" />  
+    <arg name="group_name" value="$(arg group_name)"/>
+    <arg name="world_frame" value="$(arg world_frame)"/>  
+    <arg name="base_link" value="$(arg base_link)"/> 
+    <arg name="tip_link" value="$(arg tip_link)"/>  
+    <arg name="course_filename" value="$(arg course_filename)"/>
+    <arg name="layer" value="$(arg layer)"/>  
+    <arg name="course" value="$(arg course)"/> 
+    <arg name="distance_waypoints" value="$(arg distance_waypoints)"/> 
+    <arg name="smooth_start" value="$(arg smooth_start)"/>
+    <arg name="interpolate" value="$(arg interpolate)"/> 
+    <arg name="exact_waypoints" value="$(arg exact_waypoints)"/>  
+    <arg name="add_x_distance" value="$(arg add_x_distance)"/> 
+    <arg name="add_y_distance" value="$(arg add_y_distance)"/> 
+    <arg name="add_z_distance" value="$(arg add_z_distance)"/> 
+    <arg name="tow_width" value="$(arg tow_width)"/>  
+    <arg name="tow_thickness" value="$(arg tow_thickness)"/> 
+    <arg name="max_velocity_scaling" value="$(arg max_velocity_scaling)"/>  
+    <arg name="ee_speed" value="$(arg ee_speed)"/> 
+  </include>
+  </group>
+
+  <group if="$(eval arg('motion_planning') == 'trajopt')"> 
+  <include file="$(find layla_trajopt_tesseract)/launch/layla_tesseract_setup.launch">
+    <arg name="sim" value="$(arg sim)" /> 
+  </include>
+
+  <include file="$(find layla_trajopt_tesseract)/launch/layla_trajopt_planner.launch">
+    <arg name="sim" value="$(arg sim)" />  
+    <arg name="group_name" value="$(arg group_name)"/>
+    <arg name="world_frame" value="$(arg world_frame)"/>  
+    <arg name="base_link" value="$(arg base_link)"/> 
+    <arg name="tip_link" value="$(arg tip_link)"/>  
+    <arg name="course_filename" value="$(arg course_filename)"/>
+    <arg name="layer" value="$(arg layer)"/>  
+    <arg name="course" value="$(arg course)"/> 
+    <arg name="distance_waypoints" value="$(arg distance_waypoints)"/> 
+    <arg name="smooth_start" value="$(arg smooth_start)"/>
+    <arg name="interpolate" value="$(arg interpolate)"/>
+    <arg name="exact_waypoints" value="$(arg exact_waypoints)"/>   
+    <arg name="add_x_distance" value="$(arg add_x_distance)"/> 
+    <arg name="add_y_distance" value="$(arg add_y_distance)"/> 
+    <arg name="add_z_distance" value="$(arg add_z_distance)"/> 
+    <arg name="tow_width" value="$(arg tow_width)"/>  
+    <arg name="tow_thickness" value="$(arg tow_thickness)"/>
+    <arg name="max_velocity_scaling" value="$(arg max_velocity_scaling)"/>   
+    <arg name="ee_speed" value="$(arg ee_speed)"/> 
+    <arg name="plotting" value="false"/>
+    <arg name="rviz" value="true"/>
+  </include>
+  </group>
+  
+</launch>

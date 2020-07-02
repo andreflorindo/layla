@@ -1,0 +1,83 @@
+<?xml version="1.0" ?>
+<launch>
+  <arg name="sim" default="true" />    <!--Simulation-->
+  <arg name="group_name" default="manipulator"/>
+  <arg name="world_frame" default="kl2000_base_link"/>  <!--table_table_top--> 
+  <arg name="base_link" default="kr210_base_link"/> 
+  <arg name="tip_link" default="atl_tool_tool_tip"/>  <!--kr210_qr_tool0-->
+
+  <param name="ikfast_base_frame" type="string" value="$(arg base_link)" />
+  <param name="ikfast_tool_frame" type="string" value="$(arg tip_link)" />
+
+  <!-- Change course position and velocities -->
+  <!-- <arg name="course_filename" value="/examples/simplePath.txt"/> -->
+  <arg name="course_filename" default="/examples/ExampleAndreFlat.txt"/>
+  <!-- <arg name="course_filename" default="/examples/ExampleRik4.txt"/> -->
+  <arg name="layer" default="3"/>  <!-- Ratio from max joint speed -->
+  <arg name="course" default="16"/> <!-- m/s -->
+  <arg name="distance_waypoints" default="0.004"/> <!--0.00574--> <!-- meters --> 
+  <arg name="smooth_start" default="true"/> <!-- If true, add an initial extension path to provide smooth accelerations and decelerations -->
+  <arg name="interpolate" default="true"/> <!-- If true, creates a bspline that interpolates the given points. If false, given points are used as control points to create a much smoother bspline -->
+  <arg name="exact_waypoints" default="false"/>
+  <arg name="add_x_distance" default="0.0"/> <!-- meters. Positive goes to the front, futher from the base-->
+  <arg name="add_y_distance" default="0.0"/> <!-- meters. Positive goes to the left-->
+  <arg name="add_z_distance" default="0.7"/> <!-- meters. Positive goes higher -->
+  <arg name="tow_width" default="0.0"/>   <!-- inches -->
+  <arg name="tow_thickness" default="0.001"/>   <!-- inches -->
+  <arg name="max_velocity_scaling" default="0.05"/>  <!-- Ratio from max joint speed -->
+  <arg name="ee_speed" default="0.1"/> <!-- m/s -->
+
+  <!-- <node name="pose_builder" pkg="layla_utilities" type="pose_builder" output="screen">
+    <param name="world_frame" value="kl2000_base_link"/> 
+  </node> -->
+
+  <node name="pose_builder_python" pkg="layla_utilities" type="pose_builder.py" output="screen">
+    <param name="world_frame" value="$(arg world_frame)"/>
+    <param name="course_filename" value="$(arg course_filename)"/>  
+    <param name="distance_waypoints" value="$(arg distance_waypoints)"/> 
+    <param name="add_x_distance" value="$(arg add_x_distance)"/> 
+    <param name="add_y_distance" value="$(arg add_y_distance)"/> 
+    <param name="add_z_distance" value="$(arg add_z_distance)"/> 
+    <param name="tow_width" value="$(arg tow_width)"/>  
+    <param name="tow_thickness" value="$(arg tow_thickness)"/> 
+    <param name="smooth_start" value="$(arg smooth_start)"/> 
+    <param name="interpolate" value="$(arg interpolate)"/>
+    <param name="exact_waypoints" value="$(arg exact_waypoints)"/>    
+  </node>
+
+  <node name="course_display" pkg="layla_utilities" type="course_display" output="screen"/>
+
+   <!--<node name="ee_cartesian_pose_publisher" pkg="layla_utilities" type="ee_cartesian_pose_publisher" output="screen">
+    <param name="tip_link" value="$(arg tip_link)"/>  
+    <param name="base_link" value="$(arg base_link)"/>
+  </node> -->
+  
+  <node name="ee_state_publisher" pkg="layla_utilities" type="ee_state_publisher" output="screen">
+    <param name="group_name" value="$(arg group_name)"/>
+    <param name="tip_link" value="$(arg tip_link)"/> 
+    <param name="base_link" value="$(arg base_link)"/>
+  </node>
+
+  <node name="joint_request_publisher" pkg="layla_utilities" type="joint_request_publisher" output="screen">
+    <param name="sim" value="$(arg sim)"/>
+  </node>
+
+  <node name="ee_request_publisher" pkg="layla_utilities" type="ee_request_publisher" output="screen">
+    <param name="group_name" value="$(arg group_name)"/>
+    <param name="tip_link" value="$(arg tip_link)"/> 
+    <param name="base_link" value="$(arg base_link)"/>
+  </node>
+
+  <node name="layla_descartes_moveit_main" pkg="layla_descartes_moveit" type="layla_descartes_moveit_main" output="screen">
+    <param name="group_name" value="$(arg group_name)"/>
+    <param name="tip_link" value="$(arg tip_link)"/>  
+    <param name="base_link" value="$(arg base_link)"/>
+    <param name="world_frame" value="$(arg world_frame)"/>   
+    <rosparam param="trajectory/seed_pose">[1.00, -1.40, 1.70, 0.0, 1.20, -1.20]</rosparam> 
+    <param name="max_joint_speed_scaling_between_traj" value="$(arg max_velocity_scaling)"/>
+    <param name="ee_speed" value="$(arg ee_speed)"/>
+    <param name="layer" value="$(arg layer)"/>
+    <param name="course" value="$(arg course)"/>
+  </node>
+
+</launch>

@@ -1,0 +1,67 @@
+<?xml version="1.0" ?>
+<launch>
+  <arg name="sim" default="true" />    <!--Simulation-->
+  <arg name="robot_ip" unless="$(arg sim)" />
+  <arg name="prefix" default="" />
+
+  <!-- By default, we do not start a database (it can be large) -->
+  <arg name="db" default="false" />
+
+  <!-- By default, we are not in debug mode -->
+  <arg name="debug" default="false" />
+
+  <!-- Load the URDF, SRDF and other .yaml configuration files on the param server -->
+  <!--<include file="$(find layla_core)/kr210_no_eef_cell_moveit_config/launch/planning_context.launch">-->
+  <include file="$(find kr210_atl_moveit_config)/launch/planning_context.launch">
+    <arg name="load_robot_description" value="true"/>
+  </include>
+
+  <!-- Non-standard joint names -->
+  <rosparam command="load" file="$(find kr210_atl_moveit_config)/config/joint_names.yaml" />
+
+  <!-- run the robot simulator and action interface nodes -->
+  <group if="$(arg sim)">
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="true" output="screen" />
+    <include file="$(find industrial_robot_simulator)/launch/robot_interface_simulator.launch" />
+    <rosparam param="initial_joint_state">[1.57, -1.57, 1.57, 0.0, 1.57, 0.0]</rosparam>
+    <!-- <include file="$(find kr210_drivers)/launch/kr210_controller_simulator.launch"/> -->
+  </group>
+
+  <group unless="$(arg sim)"> 
+     <!-- <remap from="/follow_joint_trajectory/status" to="/joint_trajectory_action/status" /> 
+     <remap from="/follow_joint_trajectory/feedback" to="/joint_trajectory_action/feedback" /> 
+     <remap from="/follow_joint_trajectory/result" to="/joint_trajectory_action/result" /> 
+     <remap from="/follow_joint_trajectory/goal" to="/joint_trajectory_action/goal" /> 
+     <remap from="/follow_joint_trajectory/cancel" to="/joint_trajectory_action/cancel" />  -->
+
+    <remap from="/position_trajectory_controller/follow_joint_trajectory" to="/joint_trajectory_action" />
+    <remap from="/position_trajectory_controller/state" to="/feedback_states" />
+    <remap from="/position_trajectory_controller/command" to="/joint_path_command"/>
+
+    <include file="$(find kr210_drivers)/launch/kr210_controller_bringup.launch" />
+    
+    <node pkg="tf2_ros" type="buffer_server" name="tf2_buffer_server" output="screen">
+      <param name="buffer_size" value="120.0"/>
+    </node>    
+  </group>
+
+  <!-- Run the main MoveIt executable without trajectory execution (we do not have controllers configured by default) -->
+  <!--<include file="$(find layla_core)/kr210_no_eef_cell_moveit_config/launch/move_group.launch">-->
+  <include file="$(find kr210_atl_moveit_config)/launch/move_group.launch">
+    <arg name="allow_trajectory_execution" value="true"/>
+    <arg name="fake_execution" value="false"/>
+    <arg name="info" value="true"/>
+    <arg name="debug" value="$(arg debug)"/>
+  </include>
+
+  <param name="move_group/trajectory_execution/execution_duration_monitoring" value="false"/>
+
+  <!-- run the "real robot" interface nodes-->
+  <!--   - this typically includes: robot_state, motion_interface, and joint_trajectory_action nodes -->
+  <!--   - replace these calls with appropriate robot-specific calls or launch files -->
+
+
+  <!-- rviz -->
+  <node name="rviz" type="rviz" pkg="rviz" args="-d $(find layla_descartes_moveit)/config/config.rviz" required="true" />
+
+</launch>

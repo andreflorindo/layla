@@ -1,0 +1,6 @@
+#request
+int8 num_layer
+int16 num_course
+---
+#response
+geometry_msgs/PoseArray single_course_poses
