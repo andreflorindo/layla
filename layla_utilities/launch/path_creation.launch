@@ -9,7 +9,7 @@
   <arg name="add_z_distance" default="0.7"/> <!-- meters. Positive goes higher -->
   <arg name="tow_width" default="0.0"/>   <!-- inches -->
   <arg name="tow_thickness" default="0.001"/>   <!-- inches -->
-  <arg name="interpolate" default="false"/>   <!-- inches -->
+  <arg name="bezier" default="false"/>   <!-- inches -->
 
   <node name="pose_builder_python" pkg="layla_utilities" type="pose_builder.py" output="screen">
     <param name="world_frame" value="$(arg world_frame)"/>
@@ -21,7 +21,7 @@
     <param name="tow_width" value="$(arg tow_width)"/>  
     <param name="tow_thickness" value="$(arg tow_thickness)"/> 
     <param name="smooth_start" value="$(arg smooth_start)"/> 
-    <param name="interpolate" value="$(arg interpolate)"/>   
+    <param name="bezier" value="$(arg bezier)"/>   
   </node>
 
   <node name="course_display" pkg="layla_utilities" type="course_display" output="screen"/>

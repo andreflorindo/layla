@@ -17,7 +17,7 @@
   <arg name="course" default="16"/> <!-- m/s -->
   <arg name="distance_waypoints" default="0.004"/> <!--0.00574--> <!-- meters --> 
   <arg name="smooth_start" default="true"/> <!-- If true, add an initial extension path to provide smooth accelerations and decelerations -->
-  <arg name="interpolate" default="true"/> <!-- If true, creates a bspline that interpolates the given points. If false, given points are used as control points to create a much smoother bspline -->
+  <arg name="bezier" default="true"/> <!-- If true, creates a bspline that beziers the given points. If false, given points are used as control points to create a much smoother bspline -->
   <arg name="exact_waypoints" default="false"/>
   <arg name="add_x_distance" default="0.0"/> <!-- meters. Positive goes to the front, futher from the base-->
   <arg name="add_y_distance" default="0.0"/> <!-- meters. Positive goes to the left-->
@@ -41,7 +41,7 @@
     <param name="tow_width" value="$(arg tow_width)"/>  
     <param name="tow_thickness" value="$(arg tow_thickness)"/> 
     <param name="smooth_start" value="$(arg smooth_start)"/> 
-    <param name="interpolate" value="$(arg interpolate)"/>
+    <param name="bezier" value="$(arg bezier)"/>
     <param name="exact_waypoints" value="$(arg exact_waypoints)"/>    
   </node>
 

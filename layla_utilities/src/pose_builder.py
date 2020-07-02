@@ -54,7 +54,7 @@ class PoseBuilderConfiguration:
         self.tow_width = []
         self.tow_thickness = []
         self.smooth_start = bool
-        self.interpolate = bool
+        self.bezier = bool
         self.exact_waypoints = bool
 
 
@@ -98,8 +98,8 @@ class PoseBuilderPython:
                 '~tow_thickness')*0.0254
             self.config.smooth_start = rospy.get_param(
                 '~smooth_start')
-            self.config.interpolate = rospy.get_param(
-                '~interpolate')
+            self.config.bezier = rospy.get_param(
+                '~bezier')
             self.config.exact_waypoints = rospy.get_param(
                 '~exact_waypoints')
 
@@ -672,7 +672,7 @@ class PoseBuilderPython:
         rospy.loginfo('pose_builder_python: Trajectory will be interpolated to %d waypoints, with distances of %f m between waypoitns, a total trajectory %f m', self.n_waypoints, self.config.distance_waypoints, self.arc_length)
 
         # Builds curve degree and knot vector, should pass by all points. 
-        # Only required if self.config.interpolate is false
+        # Only required if self.config.bezier is false
         k = len(self.course.x)-1
         u = []
         for i in range(0, 2*k+2):
@@ -686,7 +686,7 @@ class PoseBuilderPython:
             deriv1_bspline_course_extrapolated = self.buildDerivativeExactBSpline(1)
             deriv2_bspline_course_extrapolated = self.buildDerivativeExactBSpline(2)
         else:      
-            if (self.config.interpolate):
+            if (self.config.bezier):
                 # Uses waypoints to build the bspline
                 bspline_course_extrapolated = self.buildInterpolatedBSpline()
                 deriv1_bspline_course_extrapolated = self.buildDerivativeInterpolatedBSpline(1)

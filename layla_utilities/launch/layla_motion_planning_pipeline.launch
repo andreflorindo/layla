@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <launch>
   <arg name="sim" default="true" />    <!--Simulation-->
-  <arg name="motion_planning" default="descartes" />
+  <arg name="path_planner" default="descartes" />
 
   <arg name="group_name" default="manipulator"/>
   <arg name="world_frame" default="kl2000_base_link"/>  <!--table_table_top--> 
@@ -14,7 +14,7 @@
   <arg name="course" default="16"/> <!-- m/s -->
   <arg name="distance_waypoints" default="0.02"/> <!--0.00574--> <!-- meters -->
   <arg name="smooth_start" default="true"/> <!-- If true, add an initial extension path to provide smooth accelerations and decelerations -->
-  <arg name="interpolate" default="true"/> <!-- If true, creates a bspline that interpolates the given points. If false, given points are used as control points to create a much smoother bspline -->
+  <arg name="bezier" default="true"/> <!-- If true, creates a bspline that beziers the given points. If false, given points are used as control points to create a much smoother bspline -->
   <arg name="exact_waypoints" default="false"/>
   <arg name="add_x_distance" default="0.0"/> <!-- meters. Positive goes to the front, futher from the base-->
   <arg name="add_y_distance" default="0.0"/> <!-- meters. Positive goes to the left-->
@@ -24,7 +24,7 @@
   <arg name="max_velocity_scaling" default="0.1"/>  <!-- Ratio from max joint speed -->
   <arg name="ee_speed" default="0.1"/> <!-- m/s -->
 
-  <group if="$(eval arg('motion_planning') == 'ompl')"> 
+  <group if="$(eval arg('path_planner') == 'ompl')"> 
   <include file="$(find layla_ompl_moveit)/launch/layla_moveit_setup.launch">
     <arg name="sim" value="$(arg sim)" /> 
   </include>
@@ -41,7 +41,7 @@
     <arg name="course" value="$(arg course)"/> 
     <arg name="distance_waypoints" value="$(arg distance_waypoints)"/> 
     <arg name="smooth_start" value="$(arg smooth_start)"/> 
-    <arg name="interpolate" value="$(arg interpolate)"/> 
+    <arg name="bezier" value="$(arg bezier)"/> 
     <arg name="exact_waypoints" value="$(arg exact_waypoints)"/> 
     <arg name="add_x_distance" value="$(arg add_x_distance)"/> 
     <arg name="add_y_distance" value="$(arg add_y_distance)"/> 
@@ -53,7 +53,7 @@
   </include>
   </group>
 
-  <group if="$(eval arg('motion_planning') == 'descartes')"> 
+  <group if="$(eval arg('path_planner') == 'descartes')"> 
   <include file="$(find layla_descartes_moveit)/launch/layla_moveit_setup.launch">
     <arg name="sim" value="$(arg sim)" /> 
   </include>
@@ -69,7 +69,7 @@
     <arg name="course" value="$(arg course)"/> 
     <arg name="distance_waypoints" value="$(arg distance_waypoints)"/> 
     <arg name="smooth_start" value="$(arg smooth_start)"/>
-    <arg name="interpolate" value="$(arg interpolate)"/> 
+    <arg name="bezier" value="$(arg bezier)"/> 
     <arg name="exact_waypoints" value="$(arg exact_waypoints)"/>  
     <arg name="add_x_distance" value="$(arg add_x_distance)"/> 
     <arg name="add_y_distance" value="$(arg add_y_distance)"/> 
@@ -81,7 +81,7 @@
   </include>
   </group>
 
-  <group if="$(eval arg('motion_planning') == 'trajopt')"> 
+  <group if="$(eval arg('path_planner') == 'trajopt')"> 
   <include file="$(find layla_trajopt_tesseract)/launch/layla_tesseract_setup.launch">
     <arg name="sim" value="$(arg sim)" /> 
   </include>
@@ -97,7 +97,7 @@
     <arg name="course" value="$(arg course)"/> 
     <arg name="distance_waypoints" value="$(arg distance_waypoints)"/> 
     <arg name="smooth_start" value="$(arg smooth_start)"/>
-    <arg name="interpolate" value="$(arg interpolate)"/>
+    <arg name="bezier" value="$(arg bezier)"/>
     <arg name="exact_waypoints" value="$(arg exact_waypoints)"/>   
     <arg name="add_x_distance" value="$(arg add_x_distance)"/> 
     <arg name="add_y_distance" value="$(arg add_y_distance)"/> 
