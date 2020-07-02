@@ -13,10 +13,23 @@ The user is entitled to modify various parameters via the command-line.
 
 * **course_filename** – The file path where the laminate is described. The laminate description has to be arranged in a .txt file with a specific format, exemplified below.
 
-```Layer 1```
-```Course 1```
-```0.000000 0.388822 0.000000```
-```0.014463 0.394463 0.000000```
+```c++
+Layer 1
+
+Course 1
+
+0.000000 0.388822 0.000000
+0.014463 0.394463 0.000000
+...
+
+Course 2
+
+0.000000 0.366261 0.000000
+0.010316 0.370316 0.000000
+...
+
+...
+``` 
 
 * **layer** – The number of the layer were the executed tow course is located.
 
