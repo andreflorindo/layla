@@ -24,7 +24,7 @@ bool LayLaDescartesTesseractPlanner::run()
     }
     // Create plotting tool
     tesseract_rosutils::ROSPlottingPtr plotter =
-        std::make_shared<tesseract_rosutils::ROSPlotting>(tesseract_->getEnvironment());
+        std::make_shared<tesseract_rosutils::ROSPlotting>(tesseract_->getEnvironment()->getSceneGraph()->getRoot());
 
     if (rviz_)
     {
@@ -107,7 +107,7 @@ bool LayLaDescartesTesseractPlanner::run()
     tesseract_motion_planners::DescartesMotionPlanner<double> single_descartes_planner;
     tesseract_motion_planners::PlannerResponse single_planner_response;
     single_descartes_planner.setConfiguration(config);
-    tesseract_common::StatusCode single_status = single_descartes_planner.solve(single_planner_response, true);
+    //tesseract_common::StatusCode single_status = single_descartes_planner.solve(single_planner_response, true);
     ROS_INFO("Trajectory is planned");
 
     // tesseract_planning::DescartesTrajOptArrayPlanner descartes_trajopt_planner;

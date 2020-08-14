@@ -56,6 +56,8 @@ Course 2
 4) Execute rosdep for the remaining ROS dependencies
 5) Build the workspace using catkin built
 
+Note: Be sure to have installed the industrial_robot_simulator and the python library scipy
+
 ## Launch
 
 Each time Layla is executed, the robot trajectory corresponding to a single tow course is generated.

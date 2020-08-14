@@ -117,11 +117,11 @@ DescartesMotionPlannerConfigD LayLaDescartesTesseractPlanner::createDescartesPla
 {
     const std::vector<std::string> &joint_names = kin->getJointNames();
     const std::vector<std::string> &active_link_names = kin->getActiveLinkNames();
-    Eigen::Isometry3d tcp = current_state->transforms.at(kin->getTipLinkName());
+    Eigen::Isometry3d tcp = current_state->link_transforms.at(kin->getTipLinkName());
     // Eigen::Isometry3d tcp = Eigen::Isometry3d::Identity();
 
     tesseract_environment::AdjacencyMap::Ptr adjacency_map = std::make_shared<tesseract_environment::AdjacencyMap>(
-        tesseract_ptr->getEnvironmentConst()->getSceneGraph(), active_link_names, current_state->transforms);
+        tesseract_ptr->getEnvironmentConst()->getSceneGraph(), active_link_names, current_state->link_transforms);
 
     // Create Collision Interface
     typename descartes_light::CollisionInterface<double>::Ptr coll_interface =

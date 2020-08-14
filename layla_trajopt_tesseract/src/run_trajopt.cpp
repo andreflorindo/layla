@@ -33,7 +33,7 @@ bool LayLaTrajoptPlanner::run()
     }
     // Create plotting tool
     tesseract_rosutils::ROSPlottingPtr plotter =
-        std::make_shared<tesseract_rosutils::ROSPlotting>(tesseract_->getEnvironment());
+        std::make_shared<tesseract_rosutils::ROSPlotting>(tesseract_->getEnvironment()->getSceneGraph()->getRoot());
 
     if (rviz_)
     {
@@ -98,7 +98,7 @@ bool LayLaTrajoptPlanner::run()
     AdjacencyMap::Ptr adjacency_map =
         std::make_shared<tesseract_environment::AdjacencyMap>(prob->GetEnv()->getSceneGraph(),
                                                               prob->GetKin()->getActiveLinkNames(),
-                                                              prob->GetEnv()->getCurrentState()->transforms);
+                                                              prob->GetEnv()->getCurrentState()->link_transforms);
 
     manager->setActiveCollisionObjects(adjacency_map->getActiveLinkNames());
     manager->setContactDistanceThreshold(0);
