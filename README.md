@@ -69,4 +69,8 @@ To modify inputs variables, either change directly on the launch file or use the
 
 ```roslaunch layla_utilities layla_motion_planning_pipeline.launch layer:=1 course:=1```
 
+## Article
 
+Please use the following article to reference LayLa: 
+
+Florindo, A.M.M. (2020), LayLa: An open-source offline programming framework for composite deposition, Delft University of Technology, Master's thesis, pp.1-100.
